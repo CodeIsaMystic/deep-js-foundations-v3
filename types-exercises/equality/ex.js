@@ -1,5 +1,45 @@
 // TODO: write `findAll(..)
+function findAll(match, arr) {
+	var ret = [];
 
+	for (let value of arr) {
+		if (Object.is(match, value)) {
+			ret.push(value);
+		}
+		else if (match == null && value == null) {
+			ret.push(value);
+		}
+		else if (typeof match == "boolean") {
+			if (match === value) {
+				ret.push(value);
+			}
+		}
+		else if (
+			typeof match == "string" &&
+			match.trim() != "" &&
+			typeof value == "number" &&
+			!Object.is(-0, value)
+		) {
+			if (match == value) {
+				ret.push(value);
+			}
+		}
+		else if (
+			typeof match == "number" &&
+			!Object.is(match, -0) &&
+			!Object.is(match, NaN) &&
+			!Object.is(match, Infinity) &&
+			!Object.is(match, -Infinity) &&
+			typeof value == "string" &&
+			value.trim() != ""
+		) {
+			if (match == value) {
+				ret.push(value);
+			}
+		}
+	}
+	return ret;
+}
 
 
 // tests:
@@ -44,8 +84,8 @@ console.log(setsMatch(findAll(false, values), [false, 0]) === false);
 
 function setsMatch(arr1, arr2) {
 	if (Array.isArray(arr1) && Array.isArray(arr2) && arr1.length == arr2.length) {
-		for (let v of arr1) {
-			if (!arr2.includes(v)) return false;
+		for (let value of arr1) {
+			if (!arr2.includes(value)) return false;
 		}
 		return true;
 	}
